@@ -1,0 +1,138 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'node-crud-todo-api-test
+
+  Sample SAM Template for node-crud-todo-api
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+    MemorySize: 128
+    Runtime: nodejs16.x
+    Architectures:
+    - x86_64
+    Environment:
+      Variables:
+        TODO_TABLE:
+          Ref: Table
+        REGION_NAME:
+          Ref: Region
+Parameters:
+  Table:
+    Type: String
+    Default: Todos
+  Region:
+    Type: String
+    Default: us-west-2
+Resources:
+  CreateTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: CreateTodoFunction
+      Handler: createTodo.createTodo
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: TodoTable
+      Events:
+        CreateTodo:
+          Type: Api
+          Properties:
+            Path: /todos
+            Method: post
+    Metadata:
+      SamResourceId: CreateTodoFunction
+  DeleteTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DeleteTodoFunction
+      Handler: deleteTodo.deleteTodo
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: TodoTable
+      Events:
+        DeleteTodo:
+          Type: Api
+          Properties:
+            Path: /todos/{id}
+            Method: delete
+    Metadata:
+      SamResourceId: DeleteTodoFunction
+  GetTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetTodoFunction
+      Handler: getTodo.getTodo
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: TodoTable
+      Events:
+        GetTodo:
+          Type: Api
+          Properties:
+            Path: /todos/{id}
+            Method: get
+    Metadata:
+      SamResourceId: GetTodoFunction
+  ListTodosFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ListTodosFunction
+      Handler: listTodos.listTodos
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: TodoTable
+      Events:
+        ListTodos:
+          Type: Api
+          Properties:
+            Path: /todos
+            Method: get
+    Metadata:
+      SamResourceId: ListTodosFunction
+  UpdateTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: UpdateTodoFunction
+      Handler: updateTodo.updateTodo
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: TodoTable
+      Events:
+        UpdateTodo:
+          Type: Api
+          Properties:
+            Path: /todos/{id}
+            Method: put
+    Metadata:
+      SamResourceId: UpdateTodoFunction
+  TodoTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName:
+        Ref: Table
+Outputs:
+  TodoApi:
+    Description: API Gateway endpoint URL for Prod stage for Todos API
+    Value:
+      Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/todos/
+  CreateTodoFunction:
+    Description: CreateTodo Lambda Function ARN
+    Value:
+      Fn::GetAtt:
+      - CreateTodoFunction
+      - Arn

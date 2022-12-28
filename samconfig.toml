@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "final-crud-todo-node-api"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-90lo9uwehq9"
+s3_prefix = "final-crud-todo-node-api"
+region = "us-west-2"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "Table=\"Todos\" Region=\"us-west-2\""
+image_repositories = []
+confirm_changeset = true
