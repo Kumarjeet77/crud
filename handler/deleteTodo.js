@@ -7,7 +7,7 @@ let statusCode = 200;
 const headers = {
   "Content-Type": "application/json",
 };
-
+//DELETE ITEMS
 exports.deleteTodo = async (event, context) => {
   const params = {
     TableName: TODO_TABLE,
