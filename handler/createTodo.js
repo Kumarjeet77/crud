@@ -3,11 +3,7 @@ const AWS = require("aws-sdk");
 const TODO_TABLE = process.env.TODO_TABLE;
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const uuid = require("uuid");
-/**
- * 
- * Must first run npm install uuid inside the handler folder 
- * since that's where package.json was created!!
- */
+
 exports.createTodo = async (event, context) => {
   const timestamp = new Date().getTime();
   const data = JSON.parse(event.body);

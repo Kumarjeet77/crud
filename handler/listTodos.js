@@ -22,6 +22,7 @@ exports.listTodos = async (event, context) => {
     body = JSON.stringify(body);
   }
 
+  
   return {
     statusCode,
     body,

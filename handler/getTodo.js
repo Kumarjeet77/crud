@@ -10,6 +10,7 @@ exports.getTodo = async (event, context) => {
   };
 
   const params = {
+    
     TableName: TODO_TABLE,
     Key: {
       id: event.pathParameters.id,

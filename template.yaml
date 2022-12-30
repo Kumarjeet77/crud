@@ -17,7 +17,7 @@ Globals:
       Variables:
         TODO_TABLE: !Ref Table
         REGION_NAME: !Ref Region
-Parameters:
+  Parameters:
   Table:
     Type: String
     Default: Todos
